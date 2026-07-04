@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mulch Calculator — How Much Mulch Do You Need? (Yards &amp; Bags)</title>
+<meta name="description" content="Free mulch calculator. Enter bed size and depth to get cubic yards, number of 2 cu ft bags, and an estimated cost.">
+<style>
+:root{--g:#7a5a2a;--d:#5c431f;--bg:#f8f6f2;--ink:#2b241c}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+.wrap{max-width:680px;margin:0 auto;padding:24px 18px 60px}
+h1{font-size:1.6rem;margin:.2em 0}
+.sub{color:#756;margin-top:0}
+.card{background:#fff;border:1px solid #e8e2d8;border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+label{display:block;font-weight:600;margin:14px 0 6px}
+select,input{width:100%;padding:11px;border:1px solid #d6cdc0;border-radius:8px;font-size:1rem;background:#fff}
+.row{display:flex;gap:12px}.row>div{flex:1}
+button{margin-top:20px;width:100%;background:var(--g);color:#fff;border:0;border-radius:8px;padding:14px;font-size:1.05rem;font-weight:700;cursor:pointer}
+button:hover{background:var(--d)}
+.result{margin-top:22px;padding:18px;border-left:5px solid var(--g);background:#f3ede2;border-radius:8px;display:none}
+.result.show{display:block}
+.big{font-size:1.8rem;font-weight:800;color:var(--d)}
+.grid{display:flex;gap:18px;flex-wrap:wrap;margin-top:8px}
+.grid div{flex:1;min-width:120px}
+.note{font-size:.85rem;color:#867}
+a{color:var(--d)}.links li{margin:6px 0}
+footer{font-size:.8rem;color:#987;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Mulch Calculator</h1>
+<p class="sub">Enter your bed size and mulch depth to get cubic yards, bags, and an estimated cost.</p>
+
+<div class="card">
+  <div class="row">
+    <div><label for="len">Bed length (ft)</label><input id="len" type="number" min="0" step="0.5" value="20" inputmode="decimal"></div>
+    <div><label for="wid">Bed width (ft)</label><input id="wid" type="number" min="0" step="0.5" value="10" inputmode="decimal"></div>
+  </div>
+  <label for="depth">Mulch depth</label>
+  <select id="depth">
+    <option value="2">2 inches (refresh)</option>
+    <option value="3" selected>3 inches (standard)</option>
+    <option value="4">4 inches (new bed / weed suppression)</option>
+  </select>
+  <label for="price">Mulch price per cubic yard (bulk, optional)</label>
+  <input id="price" type="number" min="0" step="1" value="45" inputmode="numeric">
+  <button onclick="calc()">Calculate mulch</button>
+
+  <div id="out" class="result">
+    <div class="big" id="yards"></div>
+    <div class="grid">
+      <div><div class="note">Bags (2 cu ft)</div><strong id="bags"></strong></div>
+      <div><div class="note">Cubic feet</div><strong id="cft"></strong></div>
+      <div><div class="note">Est. bulk cost</div><strong id="cost"></strong></div>
+    </div>
+    <p class="note">1 cubic yard = 27 cubic feet ≈ covers 108 sq ft at 3&quot; deep. Bag count rounds up; bagged mulch usually costs more per yard than bulk.</p>
+  </div>
+</div>
+
+<div class="card">
+  <h2 style="margin-top:0">Refreshing your beds?</h2>
+  <p>Fresh mulch is the finishing touch — but bed edging, plant selection, and drainage are what make it last. Local landscape design help:</p>
+  <ul class="links">
+    <li><a href="https://austinprolandscape.com/landscape-design-austin/">Landscape design in Austin, TX</a></li>
+    <li><a href="https://denverprolandscape.com/landscape-design-denver/">Landscape design in Denver, CO</a></li>
+    <li><a href="https://nashvilleprolandscape.com/landscape-design-nashville/">Landscape design in Nashville, TN</a></li>
+    <li><a href="https://orlandoprolandscape.com/landscape-design-orlando/">Landscape design in Orlando, FL</a></li>
+    <li><a href="https://charlotteprolandscape.com/landscape-design-charlotte/">Landscape design in Charlotte, NC</a></li>
+  </ul>
+</div>
+
+<footer>Free mulch calculator · estimates only · buy ~5–10% extra for settling and uneven ground.</footer>
+</div>
+
+<script>
+function calc(){
+  var L=parseFloat(document.getElementById('len').value)||0;
+  var W=parseFloat(document.getElementById('wid').value)||0;
+  var D=parseFloat(document.getElementById('depth').value)||0;
+  var price=parseFloat(document.getElementById('price').value)||0;
+  var sqft=L*W;
+  var cft=sqft*(D/12);
+  var yards=cft/27;
+  var bags=Math.ceil(cft/2);
+  document.getElementById('yards').textContent=(Math.round(yards*100)/100)+' cubic yards';
+  document.getElementById('cft').textContent=Math.round(cft).toLocaleString('en-US');
+  document.getElementById('bags').textContent=bags.toLocaleString('en-US');
+  document.getElementById('cost').textContent = price>0 ? ('$'+Math.round(yards*price).toLocaleString('en-US')) : '—';
+  document.getElementById('out').classList.add('show');
+}
+calc();
+</script>
+</body>
+</html>
